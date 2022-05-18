@@ -1,9 +1,22 @@
-import { gql } from "apollo-server";
+import { ApolloServer, gql } from "apollo-server";
+import { ApolloServerPluginCacheControl } from "apollo-server-core";
 
 const typeDefs = gql`
-    type Query {
-        greeting: String
-    }
+  schema {
+    query: Query
+  }
+  
+  type Query {
+    greeting: String
+  }
 `;
 
-console.log(typeDefs);
+const resolvers = {
+  Query: {
+    greeting: () => "hello",
+  },
+};
+
+const server = new ApolloServer({ typeDefs, resolvers });
+const { url } = await server.listen({ port: 9000 });
+console.log(`server running at ${url}`);
