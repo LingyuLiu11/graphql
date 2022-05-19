@@ -11,7 +11,7 @@ const client = new ApolloClient({
 })
 
 export async function createJob(input) {
-  const query = gql`
+  const mutation = gql`
     mutation CreateJobMutation($input: CreateJobInput!) {
       job: createJob(input: $input) {
         id
@@ -19,8 +19,10 @@ export async function createJob(input) {
     }
   `;
   const variables = { input };
-  const headers = { 'Authorization': 'Bearer ' + getAccessToken() };
-  const { job } = await request(GRAPHQL_URL, query, variables, headers);
+  const context = {
+    headers: { 'Authorization': 'Bearer ' + getAccessToken() },
+  };
+  const { data: { job } } = await client.mutate({ mutation, variables, context });
   return job;
 }
 
