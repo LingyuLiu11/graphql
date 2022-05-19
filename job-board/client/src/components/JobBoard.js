@@ -5,7 +5,7 @@ import { getJobs } from '../graphql/queries';
 function JobBoard() {
   const [jobs, setJobs] = useState([]);
   useEffect(() => {
-    getJobs().then(setJobs);
+    getJobs().then(setJobs).catch((err) => console.log(err));
   }, []);
 
   console.log('[JobBoard] jobs:', jobs);
