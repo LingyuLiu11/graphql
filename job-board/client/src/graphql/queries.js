@@ -1,14 +1,25 @@
-import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
+import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 
-import { request} from 'graphql-request';
-import { getAccessToken } from '../auth';
+import { request } from "graphql-request";
+import { getAccessToken } from "../auth";
 
-const GRAPHQL_URL = 'http://localhost:9000/graphql';
+const GRAPHQL_URL = "http://localhost:9000/graphql";
 
 const client = new ApolloClient({
-    uri: GRAPHQL_URL,
-    cache: new InMemoryCache(),
-})
+  uri: GRAPHQL_URL,
+  cache: new InMemoryCache(),
+  defaultOptions: {
+    query: {
+      fetchPolicy: "network-only",
+    },
+    mutate: {
+      fetchPolicy: "network-only",
+    },
+    watchQuery: {
+      fetchPolicy: "network-only",
+    },
+  },
+});
 
 export async function createJob(input) {
   const mutation = gql`
@@ -20,9 +31,11 @@ export async function createJob(input) {
   `;
   const variables = { input };
   const context = {
-    headers: { 'Authorization': 'Bearer ' + getAccessToken() },
+    headers: { Authorization: "Bearer " + getAccessToken() },
   };
-  const { data: { job } } = await client.mutate({ mutation, variables, context });
+  const {
+    data: { job },
+  } = await client.mutate({ mutation, variables, context });
   return job;
 }
 
@@ -41,7 +54,9 @@ export async function getCompany(id) {
     }
   `;
   const variables = { id };
-  const {data: {company}} = await client.query({query, variables});
+  const {
+    data: { company },
+  } = await client.query({ query, variables });
   return company;
 }
 
@@ -60,7 +75,9 @@ export async function getJob(id) {
     }
   `;
   const variables = { id };
-  const {data: {job}} = await client.query({query, variables});
+  const {
+    data: { job },
+  } = await client.query({ query, variables });
   return job;
 }
 
@@ -71,11 +88,14 @@ export async function getJobs() {
         id
         title
         company {
+          id
           name
         }
       }
     }
   `;
-  const { data: { jobs } } = await client.query({ query });
+  const {
+    data: { jobs },
+  } = await client.query({ query, fetchPolicy: "network-only" });
   return jobs;
 }
