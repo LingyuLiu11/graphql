@@ -40,5 +40,11 @@
     "title": "create test 1 with auth",
     "companyId": "pVbRRBQtMVw6lUAkj1k43",
     "description": "create test"
+  },
+  {
+    "id": "SqOk-hmZHqukvskt4gmaI",
+    "title": "create test with company asso user",
+    "description": "create test company-user",
+    "companyId": "pVbRRBQtMVw6lUAkj1k43"
   }
 ]
