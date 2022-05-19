@@ -21,10 +21,11 @@ export async function getJobs() {
 
 export async function getJob(id) {
   const query = gql`
-    query JobQuery($id: ID!){
+    query JobQuery($id: ID!) {
       job(id: $id) {
         title
         company {
+          id
           name
         }
 
@@ -32,7 +33,22 @@ export async function getJob(id) {
       }
     }
   `;
-  const variables = {id};
+  const variables = { id };
   const { job } = await request(GRAPHQL_URL, query, variables);
   return job;
+}
+
+export async function getCompany(id) {
+  const query = gql`
+    query companyQuery($id: ID!) {
+      company(id: $id) {
+        id
+        name
+        description
+      }
+    }
+  `;
+  const variables = { id };
+  const { company } = await request(GRAPHQL_URL, query, variables);
+  return company;
 }

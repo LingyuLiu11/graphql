@@ -1,15 +1,13 @@
-import { Company, Job } from "./db.js";
+import { Company, Job } from './db.js';
 
 export const resolvers = {
   Query: {
-    jobs: async () => Job.findAll(),
-    job: (_root, args) => Job.findById(args.id),
+    company: (_root, { id }) => Company.findById(id),
+    job: (_root, { id }) => Job.findById(id),
+    jobs: () => Job.findAll(),
   },
 
   Job: {
-      company: (job) => {
-          return Company.findById(job.companyId);
-          
-      }
-  }
+    company: (job) => Company.findById(job.companyId),
+  },
 };
