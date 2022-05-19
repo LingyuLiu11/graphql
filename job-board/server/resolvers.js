@@ -11,6 +11,9 @@ export const resolvers = {
     createJob: (_root, {input}) => {
       return Job.create(input);
     },
+    deleteJob: (_root, {id}) => {
+        Job.delete(id);
+    }
   },
 
   Company: {
