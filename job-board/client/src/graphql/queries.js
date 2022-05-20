@@ -5,7 +5,7 @@ import { getAccessToken } from "../auth";
 
 const GRAPHQL_URL = "http://localhost:9000/graphql";
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   uri: GRAPHQL_URL,
   cache: new InMemoryCache(),
   defaultOptions: {
