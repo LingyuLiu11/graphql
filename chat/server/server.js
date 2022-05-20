@@ -3,6 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import { expressjwt } from 'express-jwt';
 import { readFile } from 'fs/promises';
+import { createServer } from 'http';
 import jwt from 'jsonwebtoken';
 import { User } from './db.js';
 import { resolvers } from './resolvers.js';
@@ -35,12 +36,14 @@ function getContext({ req }) {
   return {};
 }
 
+const httpServer = createServer(app);
+
 const typeDefs = await readFile('./schema.graphql', 'utf8');
 const apolloServer = new ApolloServer({ typeDefs, resolvers, context: getContext });
 await apolloServer.start();
 apolloServer.applyMiddleware({ app, path: '/graphql' });
 
-app.listen({ port: PORT }, () => {
+httpServer.listen({ port: PORT }, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`GraphQL endpoint: http://localhost:${PORT}/graphql`);
 });
