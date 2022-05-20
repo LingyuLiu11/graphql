@@ -33,6 +33,19 @@ const JOB_DETAIL_FRAGMENT = gql`
   }
 `;
 
+export const JOBS_QUERY = gql`
+  query JobsQuery {
+    jobs {
+      id
+      title
+      company {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const JOB_QUERY = gql`
   query JobQuery($id: ID!) {
     job(id: $id) {
@@ -104,21 +117,4 @@ export async function getJob(id) {
   return job;
 }
 
-export async function getJobs() {
-  const query = gql`
-    query JobsQuery {
-      jobs {
-        id
-        title
-        company {
-          id
-          name
-        }
-      }
-    }
-  `;
-  const {
-    data: { jobs },
-  } = await client.query({ query, fetchPolicy: "network-only" });
-  return jobs;
-}
+
